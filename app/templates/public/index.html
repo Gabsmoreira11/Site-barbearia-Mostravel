@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block title %}{{ business.name }} | Corte, Barba e Estilo{% endblock %}
+
+{% block content %}
+<header class="site-header">
+    <div class="container nav-wrap">
+        <a class="brand" href="#inicio">PRIME</a>
+        <nav>
+            <a href="#inicio">Início</a>
+            <a href="#servicos">Serviços</a>
+            <a href="#sobre">Sobre</a>
+            <a href="#galeria">Galeria</a>
+            <a href="#agendar">Agendar</a>
+        </nav>
+        <a class="btn btn-small" href="{{ url_for('customer.booking') if current_user.is_authenticated and current_user.is_customer else url_for('auth.login') }}">Agendar</a>
+    </div>
+</header>
+
+<main>
+<section class="hero" id="inicio">
+    <div class="container hero-grid">
+        <div>
+            <span class="eyebrow">BARBEARIA PREMIUM</span>
+            <h1>Seu estilo começa no corte certo.</h1>
+            <p>Cortes modernos, barba e uma experiência diferenciada para quem valoriza seu estilo.</p>
+            <div class="actions">
+                <a class="btn" href="{{ url_for('customer.booking') if current_user.is_authenticated and current_user.is_customer else url_for('auth.login') }}">Agendar horário</a>
+                <a class="btn btn-outline" href="#servicos">Ver serviços</a>
+            </div>
+        </div>
+        <div class="hero-card">
+            <span>EXPERIÊNCIA PRIME</span>
+            <strong>Corte preciso.<br>Atendimento de verdade.</strong>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="servicos">
+    <div class="container">
+        <span class="eyebrow">SERVIÇOS</span>
+        <h2>Cuidado em cada detalhe.</h2>
+        <p class="muted">Escolha o serviço ideal para renovar seu visual.</p>
+
+        <div class="cards">
+            {% for service in services %}
+            <article class="card">
+                <span class="number">{{ "%02d"|format(loop.index) }}</span>
+                <h3>{{ service.name }}</h3>
+                <p>{{ service.description }}</p>
+                <div class="price">R$ {{ "%.2f"|format(service.price)|replace(".", ",") }}</div>
+                <small>{{ service.duration }} minutos</small>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="section dark" id="sobre">
+    <div class="container two-col">
+        <div>
+            <span class="eyebrow">SOBRE</span>
+            <h2>Mais que um corte. Uma experiência.</h2>
+        </div>
+        <p>Na Barbearia Prime, cada atendimento combina técnica, cuidado e um ambiente pensado para você sair satisfeito e voltar.</p>
+    </div>
+</section>
+
+<section class="section" id="galeria">
+    <div class="container">
+        <span class="eyebrow">GALERIA</span>
+        <h2>Conheça nosso espaço.</h2>
+        <div class="gallery">
+            <div>FOTO 01</div><div>FOTO 02</div><div>FOTO 03</div><div>FOTO 04</div>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="agendar"><div class="container booking-box"><div><span class="eyebrow">AGENDAMENTO ONLINE</span><h2>Agende pelo site.</h2><p class="muted">Crie sua conta ou entre para consultar horários disponíveis e acompanhar seus agendamentos.</p></div><a class="btn" href="{{ url_for('customer.booking') if current_user.is_authenticated and current_user.is_customer else url_for('auth.login') }}">{{ 'Abrir agendamento' if current_user.is_authenticated and current_user.is_customer else 'Entrar para agendar' }}</a></div></section>
+
+<section class="section">
+    <div class="container info-grid">
+        <div><span class="eyebrow">HORÁRIOS</span><h3>Terça a sexta: 09h às 19h</h3><p>Sábado: 09h às 14h</p></div>
+        <div><span class="eyebrow">LOCALIZAÇÃO</span><h3>{{ business.address }}</h3><p>Atendimento com horário marcado.</p></div>
+    </div>
+</section>
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <strong>{{ business.name }}</strong>
+        <span>{{ business.instagram }}</span>
+        <span>{{ business.phone }}</span>
+        <small>© 2026 {{ business.name }}</small>
+    </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/public.js') }}"></script>
+{% endblock %}

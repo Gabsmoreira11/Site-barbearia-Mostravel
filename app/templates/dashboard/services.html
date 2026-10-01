@@ -1,0 +1,20 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Serviços | Prime{% endblock %}
+{% block dashboard_content %}
+<div class="page-heading"><div><span class="eyebrow">CATÁLOGO</span><h1>Serviços</h1></div></div>
+<div class="panel">
+    <h2>Novo serviço</h2>
+    <form class="inline-form" method="post" action="{{ url_for('services.create') }}">
+        <input name="name" placeholder="Nome" required>
+        <input name="description" placeholder="Descrição">
+        <input name="price" placeholder="Preço" required>
+        <input name="duration" type="number" min="5" step="5" value="30" placeholder="Minutos" required>
+        <button class="btn" type="submit">Adicionar</button>
+    </form>
+</div>
+<div class="panel">
+    {% for service in services %}
+    <div class="appointment-row"><strong>{{ service.name }}</strong><span>R$ {{ "%.2f"|format(service.price)|replace(".", ",") }}</span><span>{{ service.duration }} min</span><span>{{ "Ativo" if service.active else "Inativo" }}</span></div>
+    {% else %}<p class="muted">Nenhum serviço cadastrado.</p>{% endfor %}
+</div>
+{% endblock %}
